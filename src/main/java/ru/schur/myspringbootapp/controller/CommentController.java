@@ -2,7 +2,6 @@ package ru.schur.myspringbootapp.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.schur.myspringbootapp.dto.CommentDTO;
-import ru.schur.myspringbootapp.model.Comment;
 import ru.schur.myspringbootapp.service.CommentService;
 
 import java.util.List;
@@ -18,30 +17,19 @@ public class CommentController {
     }
 
     @PostMapping
-    public CommentDTO createComment(@RequestBody CommentDTO comment){ return commentService.createComment(comment); }
+    public void createComment(@RequestBody CommentDTO comment){commentService.createComment(comment); }
 
     @DeleteMapping("/{id}")
     public void deleteComment(@PathVariable("id") Long id){ commentService.deleteCommentById(id); }
 
     @GetMapping("/{id}")
-    public Comment getComment(@PathVariable("id") Long id){ return commentService.getCommentById(id); }
+    public CommentDTO getComment(@PathVariable("id") Long id){ return commentService.getCommentById(id); }
 
-    @GetMapping()
-    public List<String> getAllComments(){
-        return commentService.getAllComments();
+    @GetMapping
+    public List<CommentDTO> getAllComments(){ return commentService.getAllComments(); }
+
+    @PutMapping("/{id}")
+    public CommentDTO editComment(@PathVariable("id") Long id, @RequestBody CommentDTO comment){
+        return commentService.editComment(id, comment);
     }
-
-    @PutMapping("/{id}/edit")
-    public void editComment(@PathVariable("id") Long id, CommentDTO comment){
-        commentService.editComment(id, comment);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Long id){
-        commentService.deleteUserById(id);
-    }
-
-
-
-
 }

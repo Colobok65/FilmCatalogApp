@@ -10,14 +10,9 @@ import java.util.Date;
 public class CommentDTO {
 
     private Long id;
-
     private Long userId;
-
     private Long filmId;
-
     private String text;
-
     private Date date;
-
     private int likesCont;
 }

@@ -1,39 +1,39 @@
 package ru.schur.myspringbootapp.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.schur.myspringbootapp.dto.UserDTO;
 import ru.schur.myspringbootapp.model.User;
 import ru.schur.myspringbootapp.service.UserService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/my_app")
+@RequestMapping("/my_app/users")
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService) { this.userService = userService; }
 
-        this.userService = userService;
-    }
-
-    @GetMapping("/users")
-    public List<User> getAllUsers(){
+    @GetMapping
+    public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
     }
 
-    @PostMapping("/users")
-    public void addUser(@RequestBody User user){
-        userService.saveUser(user);
-    }
+    @PostMapping
+    public void createUser(@RequestBody UserDTO user){ userService.saveUser(user); }
 
-    @GetMapping("/users/{id}")
-    public User getUser(@PathVariable("id") Long id){
+    @GetMapping("/{id}")
+    public UserDTO getUser(@PathVariable("id") Long id){
         return userService.getUserById(id);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable("id") Long id){
         userService.deleteUserById(id);
     }
 
+    @PutMapping("/{id}")
+    public UserDTO editUser(@PathVariable("id") Long id, @RequestBody UserDTO user){
+        return userService.editUser(id, user);
+    }
 }

@@ -1,6 +1,7 @@
 package ru.schur.myspringbootapp.model;
 
 import lombok.Data;
+import ru.schur.myspringbootapp.dto.UserDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -27,12 +28,12 @@ public class User {
     @Column(name = "avatar")
     private String avatar;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @ManyToMany
     @JoinTable(
-            name = "user_favourite_films",
+            name = "user_favourite_film",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "film_id")
     )
@@ -46,5 +47,15 @@ public class User {
                 .stream()
                 .map(Friend::getFriend)
                 .collect(Collectors.toList());
+    }
+
+    public UserDTO toUserDTO(){
+        return new UserDTO(
+                getId(),
+                getName(),
+                getAvatar(),
+                getLogin(),
+                getPassword()
+        );
     }
 }

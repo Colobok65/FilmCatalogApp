@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "films")
+@Table(name = "film")
 public class Film {
 
     @Id
@@ -32,9 +32,9 @@ public class Film {
     private String date;
 
     @ManyToMany
-    @JoinTable(name = "categories_of_films",
+    @JoinTable(name = "category_of_film",
                 joinColumns = @JoinColumn(name = "film_id"),
-                inverseJoinColumns = @JoinColumn(name = "film_categories_id"))
+                inverseJoinColumns = @JoinColumn(name = "film_category_id"))
     private List<FilmCategory> categories;
 
 

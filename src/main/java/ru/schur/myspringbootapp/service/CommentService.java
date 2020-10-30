@@ -35,27 +35,24 @@ public class CommentService {
         comment.setDate(new Date());
         comment.setLikesCount(commentDTO.getLikesCont());
         Comment savedComment = commentRepository.save(comment);
-        return new CommentDTO(
-                savedComment.getId(),
-                savedComment.getUser().getId(),
-                savedComment.getFilm().getId(),
-                savedComment.getText(),
-                savedComment.getDate(),
-                savedComment.getLikesCount()
-        );
+        return savedComment.toCommentDTO();
     }
 
     public void deleteCommentById(Long id){ commentRepository.deleteById(id); }
 
-    public Comment getCommentById(Long id){ return commentRepository.findById(id).orElse(null); }
+    public CommentDTO getCommentById(Long id){ return getComment(id).toCommentDTO(); }
 
-    public List<String> getAllComments(){
-        return commentRepository.findAll().stream().map(Comment::getText).collect(Collectors.toList()); }
+    private Comment getComment(Long id) {
+        return commentRepository.findById(id).orElseThrow(IllegalStateException::new);
+    }
 
-    public void deleteUserById(Long id) { commentRepository.deleteById(id); }
+    public List<CommentDTO> getAllComments(){
+        return commentRepository.findAll().stream().map(Comment::toCommentDTO).collect(Collectors.toList());
+    }
 
-    public void editComment(Long id, CommentDTO commentDTO) {
-        Comment comment = getCommentById(id);
+    public CommentDTO editComment(Long id, CommentDTO commentDTO) {
+        Comment comment = getComment(id);
         comment.setText(commentDTO.getText());
+        return commentRepository.save(comment).toCommentDTO();
     }
 }
