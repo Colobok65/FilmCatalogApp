@@ -1,9 +1,7 @@
 package ru.schur.myspringbootapp.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.schur.myspringbootapp.dto.FilmDTO;
 import ru.schur.myspringbootapp.model.Film;
 import ru.schur.myspringbootapp.service.FilmService;
 
@@ -17,11 +15,19 @@ public class FilmController {
 
     public FilmController(FilmService filmService) { this.filmService = filmService; }
 
-    @GetMapping()
-    public List<Film> getAllFilms(){ return filmService.sortFilmByName(); }
+    @GetMapping
+    public List<FilmDTO> getAllFilms(){ return filmService.getAllFilms(); }
 
     @GetMapping("/{id}")
-    public Film getFilm(@PathVariable("id") Long id){ return filmService.getFilmById(id); }
+    public FilmDTO getFilm(@PathVariable("id") Long id){ return filmService.getFilmById(id); }
 
+    @PostMapping
+    public FilmDTO createFilm(@RequestBody FilmDTO filmDTO){ return filmService.saveFilm(filmDTO); }
 
+    @DeleteMapping("/{id}")
+    public void deleteFilmById(@PathVariable("id") Long id){ filmService.deleteFilmById(id); }
+
+    @PutMapping("/{id}")
+    public FilmDTO editFilm(@PathVariable("id") Long id, @RequestBody FilmDTO filmDTO){
+        return filmService.editFilm(id, filmDTO); }
 }

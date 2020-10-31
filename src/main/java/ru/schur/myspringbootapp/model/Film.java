@@ -1,11 +1,10 @@
 package ru.schur.myspringbootapp.model;
 
 import lombok.Data;
+import ru.schur.myspringbootapp.dto.FilmDTO;
 
 import javax.persistence.*;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -29,7 +28,7 @@ public class Film {
     private float rating;
 
     @Column(name = "date_of_create")
-    private String date;
+    private String dateOfCreate;
 
     @ManyToMany
     @JoinTable(name = "category_of_film",
@@ -41,6 +40,16 @@ public class Film {
     @OneToMany(mappedBy = "film")
     private List<Comment> comments;
 
+    public FilmDTO toFilmDTO(){
+        return new FilmDTO(
+                getId(),
+                getName(),
+                getPoster(),
+                getDateOfCreate(),
+                getDescription(),
+                getRating()
+        );
+    }
 }
 
 
