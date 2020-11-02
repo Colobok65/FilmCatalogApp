@@ -30,4 +30,18 @@ public class FilmController {
     @PutMapping("/{id}")
     public FilmDTO editFilm(@PathVariable("id") Long id, @RequestBody FilmDTO filmDTO){
         return filmService.editFilm(id, filmDTO); }
+
+    @GetMapping("/sort_name")
+    public List<FilmDTO> sortFilmByName(){ return filmService.sortFilmByName(); }
+
+    @GetMapping("/sort_date")
+    public List<FilmDTO> sortFilmByDateOfCreate(){ return filmService.sortFilmByDateOfCreate(); }
+
+    @GetMapping("/sort_rating")
+    public List<FilmDTO> sortFilmByRating(){ return filmService.sortFilmByRating(); }
+
+//    @GetMapping
+//    public FilmDTO findFilmByName(@RequestBody FilmDTO filmDTO){
+//        return filmService.findFilmByName(filmDTO);
+//    }
 }

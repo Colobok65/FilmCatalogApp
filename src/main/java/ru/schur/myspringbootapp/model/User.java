@@ -28,7 +28,7 @@ public class User {
     @Column(name = "avatar")
     private String avatar;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
     @ManyToMany

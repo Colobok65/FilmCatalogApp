@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public void createUser(@RequestBody UserDTO user){ userService.saveUser(user); }
+    public void createUser(@RequestBody UserDTO userDTO){ userService.saveUser(userDTO); }
 
     @GetMapping("/{id}")
     public UserDTO getUser(@PathVariable("id") Long id){
@@ -33,7 +33,12 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTO editUser(@PathVariable("id") Long id, @RequestBody UserDTO user){
-        return userService.editUser(id, user);
+    public UserDTO editUser(@PathVariable("id") Long id, @RequestBody UserDTO userDTO){
+        return userService.editUser(id, userDTO);
+    }
+
+    @GetMapping("/name")
+    public UserDTO findUserByName(@RequestBody UserDTO userDTO){
+        return userService.findUserByName(userDTO.getName());
     }
 }

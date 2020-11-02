@@ -5,10 +5,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.schur.myspringbootapp.model.User;
 
+import java.util.List;
+
 
 public interface UserRepository extends JpaRepository<User, Long> {
     @Query("FROM User u WHERE u.name = :name")
-    User findByFirstName(@Param("name") String firstName);
-
-
+    User findUserByName(@Param("name") String firstName);
 }

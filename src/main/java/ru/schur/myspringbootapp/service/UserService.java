@@ -44,4 +44,6 @@ public class UserService {
         editedUser.setPassword(userDTO.getPassword());
         return userRepository.save(editedUser).toUserDTO();
     }
+
+    public UserDTO findUserByName(String name) { return userRepository.findUserByName(name).toUserDTO(); }
 }

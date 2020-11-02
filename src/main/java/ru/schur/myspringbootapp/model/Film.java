@@ -5,6 +5,7 @@ import ru.schur.myspringbootapp.dto.FilmDTO;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -37,7 +38,7 @@ public class Film {
     private List<FilmCategory> categories;
 
 
-    @OneToMany(mappedBy = "film")
+    @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public FilmDTO toFilmDTO(){

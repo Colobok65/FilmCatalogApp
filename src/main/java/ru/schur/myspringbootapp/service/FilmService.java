@@ -13,12 +13,16 @@ public class FilmService {
 
     private final FilmRepository filmRepository;
 
+    private static List<FilmDTO> toDTOList(List<Film> list){
+        return list.stream().map(Film::toFilmDTO).collect(Collectors.toList());
+    }
+
     public FilmService(FilmRepository filmRepository) {
         this.filmRepository = filmRepository;
     }
 
     public List<FilmDTO> getAllFilms() {
-        return filmRepository.findAll().stream().map(Film::toFilmDTO).collect(Collectors.toList()); }
+        return toDTOList(filmRepository.findAll()); }
 
     public FilmDTO getFilmById(Long id) { return getFilm(id).toFilmDTO(); }
 
@@ -37,7 +41,16 @@ public class FilmService {
 
     public void deleteFilmById(Long id) { filmRepository.deleteById(id); }
 
-    public List<Film> sortFilmByName(String name) { return filmRepository.sortFilmByName(name); }
+    public List<FilmDTO> sortFilmByName() {
+        return toDTOList(filmRepository.sortFilmByName()); }
+
+    public List<FilmDTO> sortFilmByDateOfCreate() {
+        return toDTOList(filmRepository.sortFilmByDateOfCreate()); }
+
+    public List<FilmDTO> sortFilmByRating() {
+        return toDTOList(filmRepository.sortFilmByRating());
+    }
+
 
     public FilmDTO editFilm(Long id, FilmDTO filmDTO) {
         Film film = getFilm(id);
@@ -48,4 +61,8 @@ public class FilmService {
         film.setRating(filmDTO.getRating());
         return filmRepository.save(film).toFilmDTO();
     }
+
+//    public FilmDTO findFilmByName(FilmDTO filmDTO) {
+//        return filmRepository.findFilmByName(filmDTO.getName());
+//    }
 }
