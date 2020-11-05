@@ -72,8 +72,8 @@ public class FilmService {
         return filmConverter.toFilmDTOList(filmRepository.sortFilmByRating());
     }
 
-    public FilmDTO findFilmByName(String name) {
-        return filmConverter.toFilmDTO(filmRepository.findFilmByName(name));
+    public List<FilmDTO> findFilmByName(String name) {
+        return filmConverter.toFilmDTOList(filmRepository.findFilmByName(name));
     }
 
 }

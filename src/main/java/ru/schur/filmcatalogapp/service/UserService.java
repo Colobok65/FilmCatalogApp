@@ -55,7 +55,7 @@ public class UserService {
         return userConverter.toUserDTO(userRepository.save(editedUser));
     }
 
-    public UserDTO findUserByName(String name) {
-        return userConverter.toUserDTO(userRepository.findUserByName(name));
+    public List<UserDTO> findUserByName(String name) {
+        return userConverter.toUserDTOList(userRepository.findUserByName(name));
     }
 }

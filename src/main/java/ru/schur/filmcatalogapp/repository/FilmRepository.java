@@ -18,7 +18,6 @@ public interface FilmRepository extends JpaRepository<Film, Long> {
     @Query("FROM Film f ORDER BY  f.rating")
     List<Film> sortFilmByRating();
 
-    @Query("FROM Film f WHERE f.name = :name")
-    Film findFilmByName(@Param("name") String name);
-
+    @Query("SELECT f FROM Film f WHERE f.name LIKE %:name%")
+    List<Film> findFilmByName(@Param("name") String name);
 }

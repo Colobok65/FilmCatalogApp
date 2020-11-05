@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/name/{name}")
-    public UserDTO findUserByName(@PathVariable("name") String name) {
+    public List<UserDTO> findUserByName(@PathVariable("name") String name) {
         return userService.findUserByName(name);
     }
 }

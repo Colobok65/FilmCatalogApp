@@ -58,7 +58,7 @@ public class FilmController {
     }
 
     @GetMapping("/name/{name}")
-    public FilmDTO findFilmByName(@PathVariable("name") String name){
+    public List<FilmDTO> findFilmByName(@PathVariable("name") String name){
         return filmService.findFilmByName(name);
     }
 }
