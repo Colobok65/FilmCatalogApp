@@ -2,7 +2,6 @@ package ru.schur.myspringbootapp.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.schur.myspringbootapp.dto.UserDTO;
-import ru.schur.myspringbootapp.model.User;
 import ru.schur.myspringbootapp.service.UserService;
 import java.util.List;
 
@@ -12,15 +11,18 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) { this.userService = userService; }
+    public UserController(UserService userService) {
+        this.userService = userService; }
 
     @GetMapping
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @PostMapping
-    public void createUser(@RequestBody UserDTO userDTO){ userService.saveUser(userDTO); }
+    public void createUser(@RequestBody UserDTO userDTO){
+        userService.saveUser(userDTO);
+    }
 
     @GetMapping("/{id}")
     public UserDTO getUser(@PathVariable("id") Long id){
@@ -33,12 +35,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public UserDTO editUser(@PathVariable("id") Long id, @RequestBody UserDTO userDTO){
+    public UserDTO editUser(@PathVariable("id") Long id,
+                            @RequestBody UserDTO userDTO){
         return userService.editUser(id, userDTO);
     }
 
-    @GetMapping("/name")
-    public UserDTO findUserByName(@RequestBody UserDTO userDTO){
-        return userService.findUserByName(userDTO.getName());
+    @GetMapping("/name/{name}")
+    public UserDTO findUserByName(@PathVariable("name") String name) {
+        return userService.findUserByName(name);
     }
 }

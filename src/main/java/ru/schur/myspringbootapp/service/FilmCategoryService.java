@@ -1,31 +1,45 @@
 package ru.schur.myspringbootapp.service;
 
 import org.springframework.stereotype.Service;
+import ru.schur.myspringbootapp.converter.FilmCategoryConverter;
+import ru.schur.myspringbootapp.dto.FilmCategoryDTO;
 import ru.schur.myspringbootapp.model.FilmCategory;
-import ru.schur.myspringbootapp.repository.FilmCategoriesRepository;
-
+import ru.schur.myspringbootapp.repository.FilmCategoryRepository;
 import java.util.List;
 
 @Service
 public class FilmCategoryService {
 
-    private final FilmCategoriesRepository filmCategoriesRepository;
+    private final FilmCategoryRepository filmCategoryRepository;
+    private final FilmCategoryConverter filmCategoryConverter;
 
-    public FilmCategoryService(FilmCategoriesRepository filmCategoriesRepository) {
-        this.filmCategoriesRepository = filmCategoriesRepository;
+    public FilmCategoryService(FilmCategoryRepository filmCategoriesRepository,
+                               FilmCategoryConverter filmCategoryConverter) {
+        this.filmCategoryRepository = filmCategoriesRepository;
+        this.filmCategoryConverter = filmCategoryConverter;
     }
 
-    public void saveCategory(FilmCategory category){
-        filmCategoriesRepository.save(category);
-    }
-
-    public List<FilmCategory> getAllCategories() { return filmCategoriesRepository.findAll();
+    public List<FilmCategoryDTO> getAllFilmCategories() {
+        return filmCategoryConverter.toFilmCategoryDTOList(filmCategoryRepository.findAll());
     }
 
     public FilmCategory getCategoryById(Long id) {
-        return filmCategoriesRepository.findById(id).orElse(null);
+        return filmCategoryRepository.findById(id).orElseThrow(IllegalStateException::new);
     }
 
-    public void deleteCategoryById(Long id) { filmCategoriesRepository.deleteById(id);
+    public void deleteFilmCategoryById(Long id) {
+        filmCategoryRepository.deleteById(id);
+    }
+
+    public FilmCategoryDTO createFlmCategory(FilmCategoryDTO filmCategoryDTO) {
+        FilmCategory filmCategory = new FilmCategory();
+        filmCategory.setCategory(filmCategoryDTO.getCategory());
+        FilmCategory savedFilmCategory = filmCategoryRepository.save(filmCategory);
+        return filmCategoryConverter.toFilmCategoryDTO(savedFilmCategory);
+    }
+
+
+    public FilmCategoryDTO getFilmCategoryById(Long id) {
+        return filmCategoryConverter.toFilmCategoryDTO(getCategoryById(id));
     }
 }

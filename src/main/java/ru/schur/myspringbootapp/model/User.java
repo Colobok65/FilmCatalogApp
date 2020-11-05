@@ -1,8 +1,6 @@
 package ru.schur.myspringbootapp.model;
 
 import lombok.Data;
-import ru.schur.myspringbootapp.dto.UserDTO;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -47,15 +45,5 @@ public class User {
                 .stream()
                 .map(Friend::getFriend)
                 .collect(Collectors.toList());
-    }
-
-    public UserDTO toUserDTO(){
-        return new UserDTO(
-                getId(),
-                getName(),
-                getAvatar(),
-                getLogin(),
-                getPassword()
-        );
     }
 }

@@ -1,11 +1,8 @@
 package ru.schur.myspringbootapp.model;
 
 import lombok.Data;
-import ru.schur.myspringbootapp.dto.FilmDTO;
-
 import javax.persistence.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -33,24 +30,12 @@ public class Film {
 
     @ManyToMany
     @JoinTable(name = "category_of_film",
-                joinColumns = @JoinColumn(name = "film_id"),
-                inverseJoinColumns = @JoinColumn(name = "film_category_id"))
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_category_id"))
     private List<FilmCategory> categories;
-
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<Comment> comments;
-
-    public FilmDTO toFilmDTO(){
-        return new FilmDTO(
-                getId(),
-                getName(),
-                getPoster(),
-                getDateOfCreate(),
-                getDescription(),
-                getRating()
-        );
-    }
 }
 
 

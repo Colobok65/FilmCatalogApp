@@ -1,15 +1,14 @@
 package ru.schur.myspringbootapp.service;
 
 import org.springframework.stereotype.Service;
+import ru.schur.myspringbootapp.converter.CommentConverter;
 import ru.schur.myspringbootapp.dto.CommentDTO;
 import ru.schur.myspringbootapp.model.Comment;
 import ru.schur.myspringbootapp.repository.CommentRepository;
 import ru.schur.myspringbootapp.repository.FilmRepository;
 import ru.schur.myspringbootapp.repository.UserRepository;
-
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -17,14 +16,17 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final FilmRepository filmRepository;
     private final UserRepository userRepository;
+    private final CommentConverter commentConverter;
 
     public CommentService(
             CommentRepository commentRepository,
             FilmRepository filmRepository,
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            CommentConverter commentConverter) {
         this.commentRepository = commentRepository;
         this.filmRepository = filmRepository;
         this.userRepository = userRepository;
+        this.commentConverter = commentConverter;
     }
 
     public CommentDTO createComment(CommentDTO commentDTO){
@@ -35,24 +37,28 @@ public class CommentService {
         comment.setDate(new Date());
         comment.setLikesCount(commentDTO.getLikesCont());
         Comment savedComment = commentRepository.save(comment);
-        return savedComment.toCommentDTO();
+        return commentConverter.toCommentDTO(savedComment);
     }
 
-    public void deleteCommentById(Long id){ commentRepository.deleteById(id); }
+    public void deleteCommentById(Long id){
+        commentRepository.deleteById(id);
+    }
 
-    public CommentDTO getCommentById(Long id){ return getComment(id).toCommentDTO(); }
+    public CommentDTO getCommentById(Long id){
+        return commentConverter.toCommentDTO(getComment(id));
+    }
 
     private Comment getComment(Long id) {
         return commentRepository.findById(id).orElseThrow(IllegalStateException::new);
     }
 
     public List<CommentDTO> getAllComments(){
-        return commentRepository.findAll().stream().map(Comment::toCommentDTO).collect(Collectors.toList());
+        return commentConverter.toCommentDTOList(commentRepository.findAll());
     }
 
     public CommentDTO editComment(Long id, CommentDTO commentDTO) {
         Comment comment = getComment(id);
         comment.setText(commentDTO.getText());
-        return commentRepository.save(comment).toCommentDTO();
+        return commentConverter.toCommentDTO(commentRepository.save(comment));
     }
 }

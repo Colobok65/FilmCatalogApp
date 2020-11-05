@@ -1,32 +1,36 @@
 package ru.schur.myspringbootapp.service;
 
 import org.springframework.stereotype.Service;
+import ru.schur.myspringbootapp.converter.FilmConverter;
 import ru.schur.myspringbootapp.dto.FilmDTO;
 import ru.schur.myspringbootapp.model.Film;
 import ru.schur.myspringbootapp.repository.FilmRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
 
     private final FilmRepository filmRepository;
+    private final FilmConverter filmConverter;
 
-    private static List<FilmDTO> toDTOList(List<Film> list){
-        return list.stream().map(Film::toFilmDTO).collect(Collectors.toList());
-    }
-
-    public FilmService(FilmRepository filmRepository) {
+    public FilmService(FilmRepository filmRepository,
+                       FilmConverter filmConverter) {
         this.filmRepository = filmRepository;
+        this.filmConverter = filmConverter;
     }
 
     public List<FilmDTO> getAllFilms() {
-        return toDTOList(filmRepository.findAll()); }
+        return filmConverter.toFilmDTOList(filmRepository.findAll());
+    }
 
-    public FilmDTO getFilmById(Long id) { return getFilm(id).toFilmDTO(); }
+    public FilmDTO getFilmById(Long id) {
+        return filmConverter.toFilmDTO(getFilm(id));
+    }
 
-    private Film getFilm(Long id){ return filmRepository.findById(id).orElseThrow(IllegalStateException::new); }
+    private Film getFilm(Long id){
+        return filmRepository.findById(id).orElseThrow(IllegalStateException::new);
+    }
 
     public FilmDTO saveFilm(FilmDTO filmDTO) {
         Film film = new Film();
@@ -35,20 +39,13 @@ public class FilmService {
         film.setDateOfCreate(filmDTO.getDateOfCreate());
         film.setDescription(filmDTO.getDescription());
         film.setRating(filmDTO.getRating());
+        film.setCategories(filmConverter.toEntity(filmDTO.getCategories()));
         Film savedFilm = filmRepository.save(film);
-        return savedFilm.toFilmDTO();
+        return filmConverter.toFilmDTO(savedFilm);
     }
 
-    public void deleteFilmById(Long id) { filmRepository.deleteById(id); }
-
-    public List<FilmDTO> sortFilmByName() {
-        return toDTOList(filmRepository.sortFilmByName()); }
-
-    public List<FilmDTO> sortFilmByDateOfCreate() {
-        return toDTOList(filmRepository.sortFilmByDateOfCreate()); }
-
-    public List<FilmDTO> sortFilmByRating() {
-        return toDTOList(filmRepository.sortFilmByRating());
+    public void deleteFilmById(Long id) {
+        filmRepository.deleteById(id);
     }
 
 
@@ -59,10 +56,24 @@ public class FilmService {
         film.setDateOfCreate(filmDTO.getDateOfCreate());
         film.setDescription(filmDTO.getDescription());
         film.setRating(filmDTO.getRating());
-        return filmRepository.save(film).toFilmDTO();
+        film.setCategories(filmConverter.toEntity(filmDTO.getCategories()));
+        return filmConverter.toFilmDTO(filmRepository.save(film));
     }
 
-//    public FilmDTO findFilmByName(FilmDTO filmDTO) {
-//        return filmRepository.findFilmByName(filmDTO.getName());
-//    }
+    public List<FilmDTO> sortFilmByName() {
+        return filmConverter.toFilmDTOList(filmRepository.sortFilmByName());
+    }
+
+    public List<FilmDTO> sortFilmByDateOfCreate() {
+        return filmConverter.toFilmDTOList(filmRepository.sortFilmByDateOfCreate());
+    }
+
+    public List<FilmDTO> sortFilmByRating() {
+        return filmConverter.toFilmDTOList(filmRepository.sortFilmByRating());
+    }
+
+    public FilmDTO findFilmByName(String name) {
+        return filmConverter.toFilmDTO(filmRepository.findFilmByName(name));
+    }
+
 }

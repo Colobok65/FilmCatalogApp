@@ -1,8 +1,6 @@
 package ru.schur.myspringbootapp.model;
 
 import lombok.Data;
-import ru.schur.myspringbootapp.dto.CommentDTO;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -31,15 +29,4 @@ public class Comment {
 
     @Column(name = "text")
     private String text;
-
-    public CommentDTO toCommentDTO() {
-        return new CommentDTO(
-                getId(),
-                getUser().getId(),
-                getFilm().getId(),
-                getText(),
-                getDate(),
-                getLikesCount()
-        );
-    }
 }

@@ -3,6 +3,8 @@ package ru.schur.myspringbootapp.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class UserDTO {
@@ -12,4 +14,5 @@ public class UserDTO {
     private String avatar;
     private String login;
     private String password;
+    private List<Long> friendIds;
 }

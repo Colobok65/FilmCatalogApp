@@ -17,19 +17,28 @@ public class CommentController {
     }
 
     @PostMapping
-    public void createComment(@RequestBody CommentDTO comment){commentService.createComment(comment); }
+    public void createComment(@RequestBody CommentDTO comment) {
+        commentService.createComment(comment);
+    }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable("id") Long id){ commentService.deleteCommentById(id); }
+    public void deleteComment(@PathVariable("id") Long id){
+        commentService.deleteCommentById(id);
+    }
 
     @GetMapping("/{id}")
-    public CommentDTO getComment(@PathVariable("id") Long id){ return commentService.getCommentById(id); }
+    public CommentDTO getComment(@PathVariable("id") Long id){
+        return commentService.getCommentById(id);
+    }
 
     @GetMapping
-    public List<CommentDTO> getAllComments(){ return commentService.getAllComments(); }
+    public List<CommentDTO> getAllComments(){
+        return commentService.getAllComments();
+    }
 
     @PutMapping("/{id}")
-    public CommentDTO editComment(@PathVariable("id") Long id, @RequestBody CommentDTO comment){
+    public CommentDTO editComment(@PathVariable("id") Long id,
+                                  @RequestBody CommentDTO comment){
         return commentService.editComment(id, comment);
     }
 }
