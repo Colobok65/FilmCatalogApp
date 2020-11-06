@@ -13,11 +13,14 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserConverter userConverter;
+    private final FilmService filmService;
 
     public UserService(UserRepository userRepository,
-                       UserConverter userConverter) {
+                       UserConverter userConverter,
+                       FilmService filmService) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
+        this.filmService = filmService;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -47,15 +50,22 @@ public class UserService {
     }
 
     public UserDTO editUser(Long id, UserDTO userDTO) {
-        User editedUser = getUser(id);
-        editedUser.setName(userDTO.getName());
-        editedUser.setAvatar(userDTO.getAvatar());
-        editedUser.setLogin(userDTO.getLogin());
-        editedUser.setPassword(userDTO.getPassword());
-        return userConverter.toUserDTO(userRepository.save(editedUser));
+        User user = getUser(id);
+        user.setName(userDTO.getName());
+        user.setAvatar(userDTO.getAvatar());
+        user.setLogin(userDTO.getLogin());
+        user.setPassword(userDTO.getPassword());
+        User savedUser = userRepository.save(user);
+        return userConverter.toUserDTO(savedUser);
     }
 
     public List<UserDTO> findUserByName(String name) {
         return userConverter.toUserDTOList(userRepository.findUserByName(name));
+    }
+
+    public UserDTO addFilm(Long useId, Long filmId) {
+        User user = getUser(useId);
+        user.getFavouriteFilms().add(filmService.getFilm(filmId));
+        return userConverter.toUserDTO(userRepository.save(user));
     }
 }

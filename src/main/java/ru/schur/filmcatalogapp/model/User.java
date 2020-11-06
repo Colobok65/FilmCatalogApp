@@ -33,7 +33,8 @@ public class User {
     @JoinTable(
             name = "user_favourite_film",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "film_id")
+            inverseJoinColumns = @JoinColumn(name = "film_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "film_id"})}
     )
     private List<Film> favouriteFilms;
 

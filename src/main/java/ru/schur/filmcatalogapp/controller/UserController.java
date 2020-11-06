@@ -44,4 +44,10 @@ public class UserController {
     public List<UserDTO> findUserByName(@PathVariable("name") String name) {
         return userService.findUserByName(name);
     }
+
+    @PostMapping("{user_id}/films/{film_id}")
+    public UserDTO addFilm(@PathVariable("user_id") Long user_id,
+                           @PathVariable("film_id") Long film_id){
+        return userService.addFilm(user_id, film_id);
+    }
 }

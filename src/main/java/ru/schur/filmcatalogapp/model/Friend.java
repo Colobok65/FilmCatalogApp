@@ -5,7 +5,8 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "friend")
+@Table(name = "friend",
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "user_friend_id"})})
 public class Friend {
 
     @Id
@@ -22,4 +23,5 @@ public class Friend {
 
     @Column(name = "is_allowed")
     private boolean isAllowed;
+
 }
