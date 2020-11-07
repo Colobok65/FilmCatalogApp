@@ -3,6 +3,7 @@ package ru.schur.filmcatalogapp.service;
 import org.springframework.stereotype.Service;
 import ru.schur.filmcatalogapp.converter.FilmCategoryConverter;
 import ru.schur.filmcatalogapp.dto.FilmCategoryDTO;
+import ru.schur.filmcatalogapp.exception.ThereIsNoSuchFilmCategoryException;
 import ru.schur.filmcatalogapp.model.FilmCategory;
 import ru.schur.filmcatalogapp.repository.FilmCategoryRepository;
 import java.util.List;
@@ -20,14 +21,19 @@ public class FilmCategoryService {
     }
 
     public List<FilmCategoryDTO> getAllFilmCategories() {
-        return filmCategoryConverter.toFilmCategoryDTOList(filmCategoryRepository.findAll());
+        return filmCategoryConverter
+                .toFilmCategoryDTOList(filmCategoryRepository.findAll());
     }
 
     public FilmCategory getCategoryById(Long id) {
-        return filmCategoryRepository.findById(id).orElseThrow(IllegalStateException::new);
+        return filmCategoryRepository
+                .findById(id)
+                .orElseThrow(ThereIsNoSuchFilmCategoryException::new);
     }
 
     public void deleteFilmCategoryById(Long id) {
+        FilmCategory filmCategory = getCategoryById(id);
+        if(filmCategory == null) throw new ThereIsNoSuchFilmCategoryException();
         filmCategoryRepository.deleteById(id);
     }
 
@@ -40,6 +46,8 @@ public class FilmCategoryService {
 
 
     public FilmCategoryDTO getFilmCategoryById(Long id) {
-        return filmCategoryConverter.toFilmCategoryDTO(getCategoryById(id));
+        FilmCategory filmCategory = getCategoryById(id);
+        if(filmCategory == null) throw new ThereIsNoSuchFilmCategoryException();
+        return filmCategoryConverter.toFilmCategoryDTO(filmCategory);
     }
 }

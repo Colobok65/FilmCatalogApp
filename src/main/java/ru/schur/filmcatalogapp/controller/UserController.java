@@ -45,7 +45,7 @@ public class UserController {
         return userService.findUserByName(name);
     }
 
-    @PostMapping("{user_id}/films/{film_id}")
+    @PostMapping("{user_id}/film/{film_id}")
     public UserDTO addFilm(@PathVariable("user_id") Long user_id,
                            @PathVariable("film_id") Long film_id){
         return userService.addFilm(user_id, film_id);

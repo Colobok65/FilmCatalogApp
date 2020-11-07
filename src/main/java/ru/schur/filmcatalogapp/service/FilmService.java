@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.schur.filmcatalogapp.converter.FilmCategoryConverter;
 import ru.schur.filmcatalogapp.converter.FilmConverter;
 import ru.schur.filmcatalogapp.dto.FilmDTO;
+import ru.schur.filmcatalogapp.exception.ThereIsNoSuchFilmException;
 import ru.schur.filmcatalogapp.model.Film;
 import ru.schur.filmcatalogapp.repository.FilmRepository;
 
@@ -33,7 +34,9 @@ public class FilmService {
     }
 
     public Film getFilm(Long id){
-        return filmRepository.findById(id).orElseThrow(IllegalStateException::new);
+        return filmRepository
+                .findById(id)
+                .orElseThrow(ThereIsNoSuchFilmException::new);
     }
 
     public FilmDTO saveFilm(FilmDTO filmDTO) {
@@ -43,41 +46,51 @@ public class FilmService {
         film.setDateOfCreate(filmDTO.getDateOfCreate());
         film.setDescription(filmDTO.getDescription());
         film.setRating(filmDTO.getRating());
-        film.setCategories(filmCategoryConverter.toFilmCategoryEntity(filmDTO.getCategories()));
+        film.setCategories(filmCategoryConverter
+                .toFilmCategoryEntity(filmDTO.getCategories()));
         Film savedFilm = filmRepository.save(film);
         return filmConverter.toFilmDTO(savedFilm);
     }
 
     public void deleteFilmById(Long id) {
+        Film film = getFilm(id);
+        if(film == null) throw new ThereIsNoSuchFilmException();
         filmRepository.deleteById(id);
     }
 
 
     public FilmDTO editFilm(Long id, FilmDTO filmDTO) {
         Film film = getFilm(id);
+        if(film == null) throw new ThereIsNoSuchFilmException();
         film.setName(filmDTO.getName());
         film.setPoster(filmDTO.getPoster());
         film.setDateOfCreate(filmDTO.getDateOfCreate());
         film.setDescription(filmDTO.getDescription());
         film.setRating(filmDTO.getRating());
-        film.setCategories(filmCategoryConverter.toFilmCategoryEntity(filmDTO.getCategories()));
+        film.setCategories(filmCategoryConverter
+                .toFilmCategoryEntity(filmDTO.getCategories()));
         return filmConverter.toFilmDTO(filmRepository.save(film));
     }
 
     public List<FilmDTO> sortFilmByName() {
-        return filmConverter.toFilmDTOList(filmRepository.sortFilmByName());
+        List<Film> films = filmRepository.sortFilmByName();
+        return filmConverter.toFilmDTOList(films);
     }
 
     public List<FilmDTO> sortFilmByDateOfCreate() {
-        return filmConverter.toFilmDTOList(filmRepository.sortFilmByDateOfCreate());
+        List<Film> films = filmRepository.sortFilmByDateOfCreate();
+        return filmConverter.toFilmDTOList(films);
     }
 
     public List<FilmDTO> sortFilmByRating() {
-        return filmConverter.toFilmDTOList(filmRepository.sortFilmByRating());
+        List<Film> films = filmRepository.sortFilmByRating();
+        return filmConverter.toFilmDTOList(films);
     }
 
     public List<FilmDTO> findFilmByName(String name) {
-        return filmConverter.toFilmDTOList(filmRepository.findFilmByName(name));
+        List<Film> films = filmRepository.findFilmByName(name);
+        if(films.isEmpty()) throw new ThereIsNoSuchFilmException();
+        return filmConverter.toFilmDTOList(films);
     }
 
 }

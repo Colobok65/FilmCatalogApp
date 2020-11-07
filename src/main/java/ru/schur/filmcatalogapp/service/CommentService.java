@@ -3,6 +3,7 @@ package ru.schur.filmcatalogapp.service;
 import org.springframework.stereotype.Service;
 import ru.schur.filmcatalogapp.converter.CommentConverter;
 import ru.schur.filmcatalogapp.dto.CommentDTO;
+import ru.schur.filmcatalogapp.exception.ThereIsNoSuchCommentException;
 import ru.schur.filmcatalogapp.model.Comment;
 import ru.schur.filmcatalogapp.repository.CommentRepository;
 import ru.schur.filmcatalogapp.repository.FilmRepository;
@@ -41,15 +42,19 @@ public class CommentService {
     }
 
     public void deleteCommentById(Long id){
+        Comment comment = getComment(id);
+        if(comment == null) throw new ThereIsNoSuchCommentException();
         commentRepository.deleteById(id);
     }
 
     public CommentDTO getCommentById(Long id){
+        Comment comment = getComment(id);
+        if(comment == null) throw new ThereIsNoSuchCommentException();
         return commentConverter.toCommentDTO(getComment(id));
     }
 
     private Comment getComment(Long id) {
-        return commentRepository.findById(id).orElseThrow(IllegalStateException::new);
+        return commentRepository.findById(id).orElseThrow(ThereIsNoSuchCommentException::new);
     }
 
     public List<CommentDTO> getAllComments(){
@@ -58,6 +63,7 @@ public class CommentService {
 
     public CommentDTO editComment(Long id, CommentDTO commentDTO) {
         Comment comment = getComment(id);
+        if(comment == null) throw new ThereIsNoSuchCommentException();
         comment.setText(commentDTO.getText());
         return commentConverter.toCommentDTO(commentRepository.save(comment));
     }
