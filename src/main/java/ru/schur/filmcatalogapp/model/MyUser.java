@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 @Data
 @Entity
 @Table(name = "user")
-public class User {
+public class MyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,7 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "password", unique = true, nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "login", unique = true, nullable = false)
@@ -41,7 +41,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Friend> friends;
 
-    public List<User> getUserFriends() {
+    public List<MyUser> getUserFriends() {
         return friends
                 .stream()
                 .map(Friend::getFriend)

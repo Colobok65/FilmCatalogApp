@@ -15,7 +15,7 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private MyUser user;
 
     @Column(name = "date")
     private Date date;

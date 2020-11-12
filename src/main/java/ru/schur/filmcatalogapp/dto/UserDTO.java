@@ -12,8 +12,6 @@ public class UserDTO {
     private Long id;
     private String name;
     private String avatar;
-    private String login;
-    private String password;
     private List<Long> friendIds;
     private List<Long> filmIds;
 }

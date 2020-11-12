@@ -11,7 +11,7 @@
     <groupId>ru.schur</groupId>
     <artifactId>myspringbootapp</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Myspringbootapp</name>
+    <name>FilmCatalogApp</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -37,6 +37,21 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.11</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

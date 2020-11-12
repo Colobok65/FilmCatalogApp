@@ -15,11 +15,11 @@ public class Friend {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
-    private User user;
+    private MyUser user;
 
     @ManyToOne()
     @JoinColumn(name = "user_friend_id")
-    private User friend;
+    private MyUser friend;
 
     @Column(name = "is_allowed")
     private boolean isAllowed;

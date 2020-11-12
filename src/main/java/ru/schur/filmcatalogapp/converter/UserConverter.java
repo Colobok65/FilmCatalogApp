@@ -3,7 +3,8 @@ package ru.schur.filmcatalogapp.converter;
 import org.springframework.stereotype.Service;
 import ru.schur.filmcatalogapp.dto.UserDTO;
 import ru.schur.filmcatalogapp.model.Film;
-import ru.schur.filmcatalogapp.model.User;
+import ru.schur.filmcatalogapp.model.Friend;
+import ru.schur.filmcatalogapp.model.MyUser;
 import ru.schur.filmcatalogapp.repository.UserRepository;
 
 import java.util.List;
@@ -18,16 +19,14 @@ public class UserConverter {
         this.userRepository = userRepository;
     }
 
-    public UserDTO toUserDTO(User user){
+    public UserDTO toUserDTO(MyUser user){
         return new UserDTO(
                 user.getId(),
                 user.getName(),
                 user.getAvatar(),
-                user.getLogin(),
-                user.getPassword(),
                 user.getFriends()
                         .stream()
-                        .map(friend -> friend.getFriend().getId())
+                        .map(Friend::getId)
                         .collect(Collectors.toList()),
                 user.getFavouriteFilms()
                 .stream()
@@ -36,14 +35,14 @@ public class UserConverter {
         );
     }
 
-    public List<UserDTO> toUserDTOList(List<User> list){
+    public List<UserDTO> toUserDTOList(List<MyUser> list){
         return list
                 .stream()
                 .map(this::toUserDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<User> toUserEntity(List<UserDTO> list){
+    public List<MyUser> toUserEntity(List<UserDTO> list){
         return list
                 .stream()
                 .map(userDTO -> userRepository.getOne(userDTO.getId()))
