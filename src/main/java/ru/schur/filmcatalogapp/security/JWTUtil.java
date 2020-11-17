@@ -25,6 +25,7 @@ public class JWTUtil {
         Map<String, Object> claims = new HashMap<>();
         String commaSeparatedListOfAuthorities = userDetails.getAuthorities()
                 .stream()
+//                .map(GrantedAuthority::getAuthority)
                 .map(a->a.getAuthority())
                 .collect(Collectors.joining(","));
         claims.put("authorities", commaSeparatedListOfAuthorities);
@@ -52,11 +53,13 @@ public class JWTUtil {
 
     private String createToken(Map<String, Object> claims, String subject) {
 
-        return Jwts.builder().setClaims(claims)
+        return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(expireTimeFromNow())
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
     }
 
     private Date expireTimeFromNow() {

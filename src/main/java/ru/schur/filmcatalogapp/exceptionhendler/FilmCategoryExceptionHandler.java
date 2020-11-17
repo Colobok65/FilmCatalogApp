@@ -1,7 +1,5 @@
 package ru.schur.filmcatalogapp.exceptionhendler;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,14 +11,8 @@ import ru.schur.filmcatalogapp.exception.ThereIsNoSuchFilmCategoryException;
 public class FilmCategoryExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ThereIsNoSuchFilmCategoryException.class)
-    protected ResponseEntity<NoCategoryException> handleThereIsNoSuchFilmCategoryException(){
-        return new ResponseEntity<>(new NoCategoryException("There is no such category"),
+    protected ResponseEntity<ExceptionComment> handleThereIsNoSuchFilmCategoryException(){
+        return new ResponseEntity<>(new ExceptionComment("There is no such category"),
                 HttpStatus.NOT_FOUND);
-    }
-
-    @Data
-    @AllArgsConstructor
-    private static class NoCategoryException{
-        private String message;
     }
 }
