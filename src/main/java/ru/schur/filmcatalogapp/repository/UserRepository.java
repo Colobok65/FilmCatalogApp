@@ -12,7 +12,4 @@ public interface UserRepository extends JpaRepository<MyUser, Long> {
     List<MyUser> findUserByName(@Param("name") String name);
 
     MyUser findByLogin(String login);
-
-
-
 }

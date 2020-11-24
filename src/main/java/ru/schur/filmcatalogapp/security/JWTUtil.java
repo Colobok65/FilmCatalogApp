@@ -32,6 +32,8 @@ public class JWTUtil {
         return createToken(claims, userDetails.getUsername());
     }
 
+
+
     //извлечение имени пользователя из токена (внутри валидация токена)
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

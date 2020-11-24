@@ -1,6 +1,7 @@
 package ru.schur.filmcatalogapp.controller;
 
 import org.springframework.web.bind.annotation.*;
+import ru.schur.filmcatalogapp.dto.FilmDTO;
 import ru.schur.filmcatalogapp.dto.UserDTO;
 import ru.schur.filmcatalogapp.service.UserService;
 import java.util.List;
@@ -45,9 +46,13 @@ public class UserController {
         return userService.findUserByName(name);
     }
 
-    @PostMapping("{user_id}/film/{film_id}")
-    public UserDTO addFilm(@PathVariable("user_id") Long user_id,
-                           @PathVariable("film_id") Long film_id){
-        return userService.addFilm(user_id, film_id);
+    @PostMapping("/film/{film_id}")
+    public UserDTO addFilm(@PathVariable("film_id") Long filmId){
+        return userService.addFilm(filmId);
+    }
+
+    @GetMapping("/{id}/films")
+    public List<FilmDTO> getUserFilms(@PathVariable("id") Long id){
+        return userService.getUserFilms(id);
     }
 }

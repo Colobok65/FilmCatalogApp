@@ -47,4 +47,5 @@ public class MyUser {
                 .map(Friend::getFriend)
                 .collect(Collectors.toList());
     }
+
 }

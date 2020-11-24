@@ -24,4 +24,7 @@ public class Friend {
     @Column(name = "is_allowed")
     private boolean isAllowed;
 
+    // boolean isConfirmed
+    // boolean isPending
+
 }

@@ -1,9 +1,11 @@
 package ru.schur.filmcatalogapp.service;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.schur.filmcatalogapp.converter.FriendConverter;
 import ru.schur.filmcatalogapp.dto.FriendDTO;
 import ru.schur.filmcatalogapp.model.Friend;
+import ru.schur.filmcatalogapp.model.MyUser;
 import ru.schur.filmcatalogapp.repository.FriendRepository;
 
 @Service
@@ -14,7 +16,7 @@ public class FriendService {
     private final FriendConverter friendConverter;
 
     public FriendService(FriendRepository friendRepository,
-                         UserService userService,
+                         @Lazy UserService userService,
                          FriendConverter friendConverter) {
         this.friendRepository = friendRepository;
         this.userService = userService;
@@ -22,10 +24,21 @@ public class FriendService {
     }
 
     public FriendDTO addFriend(FriendDTO friendDTO) {
-        Friend friend = new Friend();
-        friend.setUser(userService.getUser(friendDTO.getUserId()));
-        friend.setFriend(userService.getUser(friendDTO.getUserFriendId()));
-        friend.setAllowed(friendDTO.isAllowed());
-        return friendConverter.toFriendDTO(friendRepository.save(friend));
+        MyUser currentUser = userService.getUser(friendDTO.getUserId());
+        MyUser otherUser = userService.getUser(friendDTO.getUserFriendId());
+        Friend currentUserFriend = new Friend();
+        currentUserFriend.setUser(currentUser);
+        currentUserFriend.setFriend(otherUser);
+        currentUserFriend.setAllowed(friendDTO.isAllowed());
+        Friend otherUserFriend = new Friend();
+        otherUserFriend.setUser(otherUser);
+        otherUserFriend.setFriend(currentUser);
+        otherUserFriend.setAllowed(friendDTO.isAllowed());
+        return friendConverter.toFriendDTO(friendRepository.save(currentUserFriend));
     }
+
+    public Friend findFriendById(Long id, Long friendId){
+        return friendRepository.findFriendById(id, friendId);
+    }
+
 }
