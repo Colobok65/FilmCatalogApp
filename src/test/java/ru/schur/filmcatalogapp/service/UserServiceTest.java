@@ -63,7 +63,7 @@ class UserServiceTest {
     @DisplayName("getUserFilms")
     public class GetUserFilms {
         @Test
-        @DisplayName(" Should do something")
+        @DisplayName("Should return friend's film collection")
         void shouldReturnFriendsFilmCollection() {
             Long userId = 10L;
             List<FilmDTO> expected = new ArrayList<>();
@@ -109,7 +109,8 @@ class UserServiceTest {
         }
 
         @Test()
-        void getUserFilms_ShouldThrow_ThereIsNoSucUserException() throws ThereIsNoSuchUserException {
+        @DisplayName("Should throw ThereIsNoSuchUserException")
+        void getUserFilms_ShouldThrow_Exception() {
 
             when(userRepositoryMock.findByLogin(any())).thenReturn(null);
 
@@ -120,7 +121,8 @@ class UserServiceTest {
         }
 
         @Test
-        void getUserFilms_ShouldThrow_AccessIsNotAllowedException_IfFriendIsNotAllowed() {
+        @DisplayName("Should throw AccessIsNotAllowedException if Friend.isAllowed = false")
+        void getUserFilms_ShouldThrow_Exception2() {
 
             Long userId = 10L;
             MyUser currentUser = new MyUser();
@@ -152,7 +154,8 @@ class UserServiceTest {
         }
 
         @Test
-        void getUserFilms_ShouldThrow_AccessIsNotAllowedException_IfFriendIsNull(){
+        @DisplayName("Should throw AccessIsNotAllowedException if Friend == null")
+        void getUserFilms_ShouldThrow_Exception3(){
             Long userId = 10L;
             MyUser currentUser = new MyUser();
             currentUser.setId(30L);
@@ -182,7 +185,8 @@ class UserServiceTest {
         }
 
         @Test
-        void getUserFilms_ShouldThrow_Exception_IfUserNotFoundById(){
+        @DisplayName("Should throw ThereIsNoSuchUserException if user not fond by Id")
+        void getUserFilms_ShouldThrow_Exception4(){
 
             Long userId = 10L;
             MyUser currentUser = new MyUser();
