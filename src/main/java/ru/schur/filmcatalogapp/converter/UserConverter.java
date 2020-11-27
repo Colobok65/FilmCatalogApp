@@ -19,7 +19,7 @@ public class UserConverter {
         this.userRepository = userRepository;
     }
 
-    public UserDTO toUserDTO(MyUser user){
+    public UserDTO toUserDTO(MyUser user) {
         return new UserDTO(
                 user.getId(),
                 user.getName(),

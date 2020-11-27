@@ -8,6 +8,7 @@ import ru.schur.filmcatalogapp.converter.UserConverter;
 import ru.schur.filmcatalogapp.dto.FilmDTO;
 import ru.schur.filmcatalogapp.dto.UserDTO;
 import ru.schur.filmcatalogapp.exception.AccessIsNotAllowedException;
+import ru.schur.filmcatalogapp.exception.ThereIsNoSuchFilmException;
 import ru.schur.filmcatalogapp.exception.ThereIsNoSuchUserException;
 import ru.schur.filmcatalogapp.model.Friend;
 import ru.schur.filmcatalogapp.model.MyUser;
@@ -81,8 +82,8 @@ public class UserService {
     }
 
     public UserDTO addFilm(Long filmId) {
+        if (filmId == null) throw new ThereIsNoSuchFilmException();
         MyUser user = userRepository.findByLogin(getCurrentUserName());
-        if (user == null) throw new ThereIsNoSuchUserException();
         user.getFavouriteFilms().add(filmService.getFilm(filmId));
         return userConverter.toUserDTO(userRepository.save(user));
     }
