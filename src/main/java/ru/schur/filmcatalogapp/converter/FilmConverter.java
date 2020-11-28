@@ -34,7 +34,8 @@ public class FilmConverter {
                 film.getComments()
                         .stream()
                         .map(commentConverter::toCommentDTO)
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()),
+                film.getLikesCount()
         );
     }
 

@@ -11,4 +11,5 @@ public class FriendDTO {
     private Long userId;
     private Long userFriendId;
     private boolean isAllowed;
+
 }

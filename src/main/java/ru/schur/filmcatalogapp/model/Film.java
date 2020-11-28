@@ -36,6 +36,9 @@ public class Film {
 
     @OneToMany(mappedBy = "film", cascade = CascadeType.ALL)
     private List<Comment> comments;
+    
+    @Column(name = "count_of_likes")
+    private int likesCount;
 }
 
 

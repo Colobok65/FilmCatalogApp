@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.schur.filmcatalogapp.model.Film;
 
-
 import java.util.List;
 
 public interface FilmRepository extends JpaRepository<Film, Long> {

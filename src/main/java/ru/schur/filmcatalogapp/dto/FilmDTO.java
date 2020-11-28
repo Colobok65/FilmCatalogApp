@@ -16,4 +16,5 @@ public class FilmDTO {
     private float rating;
     private List<FilmCategoryDTO> categories;
     private List<CommentDTO> comments;
+    private int likesCount;
 }

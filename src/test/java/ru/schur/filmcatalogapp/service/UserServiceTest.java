@@ -139,7 +139,8 @@ class UserServiceTest {
                     "description",
                     3,
                     new ArrayList<>(),
-                    new ArrayList<>()
+                    new ArrayList<>(),
+                    0
             ));
             MyUser currentUser = new MyUser();
             currentUser.setId(30L);
@@ -155,6 +156,7 @@ class UserServiceTest {
             film.setRating(3);
             film.setCategories(new ArrayList<>());
             film.setComments(new ArrayList<>());
+            film.setLikesCount(0);
             favouriteFilms.add(film);
             friendUser.setFavouriteFilms(favouriteFilms);
             Friend friend = new Friend();

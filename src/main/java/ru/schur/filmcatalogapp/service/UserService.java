@@ -27,7 +27,7 @@ public class UserService {
 
     public UserService(UserRepository userRepository,
                        UserConverter userConverter,
-                       FilmService filmService,
+                       @Lazy FilmService filmService,
                        @Lazy FriendService friendService,
                        FilmConverter filmConverter
     ) {

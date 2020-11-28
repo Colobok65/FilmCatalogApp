@@ -61,4 +61,9 @@ public class FilmController {
     public List<FilmDTO> findFilmByName(@PathVariable("name") String name){
         return filmService.findFilmByName(name);
     }
+
+    @PostMapping("/{id}/add_like")
+    public FilmDTO addLikeToTheFilm(@PathVariable("id") Long filmId){
+        return filmService.addLikeToTheFilm(filmId);
+    }
 }
