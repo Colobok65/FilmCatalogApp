@@ -66,4 +66,10 @@ public class FilmController {
     public FilmDTO addLikeToTheFilm(@PathVariable("id") Long filmId){
         return filmService.addLikeToTheFilm(filmId);
     }
+
+    @PutMapping("/{film_id}/add_category/{film_category}")
+    public FilmDTO addCategoryToTheFilm(@PathVariable("film_id") Long filmId,
+                                        @PathVariable("film_category") Long categoryId){
+        return filmService.addCategoryToTheFilm(filmId, categoryId);
+    }
 }
