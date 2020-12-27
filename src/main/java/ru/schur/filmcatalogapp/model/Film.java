@@ -39,6 +39,12 @@ public class Film {
     
     @Column(name = "count_of_likes")
     private int likesCount;
+
+    @ManyToMany
+    @JoinTable(name = "user_liked_film",
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private  List<MyUser> usersWhoLikedThisFilm;
 }
 
 

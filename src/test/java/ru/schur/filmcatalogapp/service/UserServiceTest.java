@@ -42,7 +42,7 @@ class UserServiceTest {
     private final FilmService filmServiceMock = mock(FilmService.class);
     private final FriendService friendServiceMock = mock(FriendService.class);
     private final FilmCategoryRepository filmCategoryRepositoryMock = mock(FilmCategoryRepository.class);
-    private final FilmConverter filmConverterMock = new FilmConverter(
+    private final FilmConverter filmConverter = new FilmConverter(
             new CommentConverter(),
             new FilmCategoryConverter(filmCategoryRepositoryMock)
     );
@@ -56,7 +56,7 @@ class UserServiceTest {
                 userConverter,
                 filmServiceMock,
                 friendServiceMock,
-                filmConverterMock
+                filmConverter
         ));
         doReturn(USERNAME).when(userService).getCurrentUserName();
     }

@@ -13,7 +13,6 @@ import ru.schur.filmcatalogapp.repository.FilmCategoryRepository;
 import ru.schur.filmcatalogapp.repository.FilmRepository;
 import ru.schur.filmcatalogapp.repository.UserRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,8 +24,6 @@ public class FilmService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final FilmCategoryRepository filmCategoryRepository;
-    private final List<Long> userIds = new ArrayList<>();
-
 
     public FilmService(FilmRepository filmRepository,
                        FilmConverter filmConverter,
@@ -114,27 +111,27 @@ public class FilmService {
         return filmConverter.toFilmDTOList(films);
     }
 
-    public FilmDTO addLikeToTheFilm(Long filmId){
-        MyUser user = userRepository.findByLogin(userService.getCurrentUserName());
-        Film film = getFilm(filmId);
-        if(film == null) throw new ThereIsNoSuchFilmException();
-        if(!userIds.contains(user.getId())){
-            film.setLikesCount(film.getLikesCount() + 1);
-            userIds.add(user.getId());
-        }
-        else{
-            film.setLikesCount(film.getLikesCount() - 1);
-            userIds.remove(user.getId());
-        }
-        filmRepository.save(film);
-        return filmConverter.toFilmDTO(film);
-    }
-
     public FilmDTO addCategoryToTheFilm(Long filmId, Long categoryId) {
         Film film = getFilm(filmId);
         film.getCategories().add(filmCategoryRepository
                         .findById(categoryId)
                         .orElseThrow(ThereIsNoSuchFilmCategoryException::new));
+        filmRepository.save(film);
+        return filmConverter.toFilmDTO(film);
+    }
+
+    public FilmDTO addLikeToTheFilm(Long filmId){
+        MyUser user = userRepository.findByLogin(userService.getCurrentUserName());
+        Film film = getFilm(filmId);
+        if(film == null) throw new ThereIsNoSuchFilmException();
+        if(!film.getUsersWhoLikedThisFilm().contains(user)){
+            film.setLikesCount(film.getLikesCount() + 1);
+            film.getUsersWhoLikedThisFilm().add(user);
+        }
+        else{
+            film.setLikesCount(film.getLikesCount() - 1);
+            film.getUsersWhoLikedThisFilm().remove(user);
+        }
         filmRepository.save(film);
         return filmConverter.toFilmDTO(film);
     }
